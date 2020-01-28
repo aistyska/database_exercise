@@ -111,4 +111,69 @@ GROUP BY job_id"""
 query2_11 = """SELECT manager_id, salary FROM employees 
 ORDER BY salary
 LIMIT 1"""
-db_query(query2_11)
+
+
+#PART 3
+# Tables:
+# 1. Employees - Columns: employee_id, first_name, last_name, email, phone_number,
+# hire_date, job_id, salary, commission_pct, manager_id, department_id
+# 2. Departments - Columns: Department_ID , depart_name, Manager_ID, Location_ID
+# 3. Locations - Columns: location_id ,street_address,postal_code, city,
+# state_province, country_id .
+# 4. Jobs - Columns: Job_ID, Job_Title,Min_Salary, Max_Salary
+
+# 1. Write a query to find the names (first_name, last_name) and salaries of the
+# employees who have a higher salary than the employee whose last_name='Bull'.
+# Table : employees
+query3_1 = """SELECT first_name, last_name, salary FROM employees
+WHERE salary > (SELECT salary FROM employees
+WHERE last_name = 'Bull')"""
+
+# 2. Write a query to find the names (first_name, last_name) of the employees who are managers.
+# Table : employees
+query3_2 = """SELECT first_name, last_name FROM employees 
+WHERE job_id IN ("SELECT Job_ID FROM jobs WHERE Job_Title LIKE '%Manager%')"""
+
+# 3. Write a query to find the names (first_name, last_name), the salary of the
+# employees whose salary is greater than the average salary
+# Table : employees
+query3_3 = """SELECT first_name, last_name, salary FROM employees
+WHERE salary > 
+(SELECT AVG(salary) FROM employees)"""
+
+# 4. Write a query to find the names (first_name, last_name), the salary of the
+# employees whose salary is equal to the minimum salary for their job grade.
+# Tables : employees, jobs.
+query3_4_1 = """SELECT first_name, last_name, salary FROM employees
+JOIN jobs ON employees.job_id = jobs.Job_ID
+WHERE employees.salary = jobs.Min_Salary
+"""
+
+# query3_4 = """SELECT first_name, last_name, salary FROM employees
+# WHERE job_id IN
+# (SELECT Job_ID FROM jobs) AND salary IN (SELECT Min_Salary FROM jobs)"""
+
+
+# 5. Write a query to find the names (first_name, last_name), the salary of the
+# employees who earn more than the average salary and who works in any of the IT departments.
+# Tables : employees, departments
+query3_5 = """SELECT first_name, last_name, salary FROM employees 
+WHERE salary > (SELECT AVG(salary) FROM employees)
+AND department_id IN (SELECT department_id FROM departments 
+WHERE depart_name LIKE 'IT%')"""
+
+# 6. Write a query to get 3 maximum salaries.
+# Tables : employees
+query3_6 = """SELECT DISTINCT salary FROM employees 
+ORDER BY salary DESC
+LIMIT 3"""
+
+# 7. Write a query to find the names (first_name, last_name) of the employees who
+# have a manager who works for a department based in the United States.
+# Tables : employees, departments, locations
+query3_7 = """SELECT first_name, last_name FROM employees
+WHERE manager_id IN
+(SELECT Manager_ID FROM departments WHERE Location_ID IN 
+(SELECT location_id FROM locations 
+WHERE country_id = 'US'))"""
+
