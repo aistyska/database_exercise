@@ -189,7 +189,7 @@ def ex_3_3():
 # employees whose salary is equal to the minimum salary for their job grade.
 # Tables : employees, jobs.
 def ex_3_4join():
-    query3 = """SELECT first_name, last_name, salary FROM employees
+    query = """SELECT first_name, last_name, salary FROM employees
     JOIN jobs ON employees.job_id = jobs.Job_ID
     WHERE employees.salary = jobs.Min_Salary"""
     db_query(query)
